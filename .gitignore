@@ -47,3 +47,4 @@ app.*.map.json
 
 #Server Files
 /server/config.js
+/server/node_modules
