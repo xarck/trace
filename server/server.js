@@ -1,4 +1,3 @@
-const querystring = require("querystring");
 const express = require("express");
 const request = require("request");
 const keys = require("./config.js");
@@ -8,29 +7,26 @@ var app = express();
 app.get("/login", function (req, res) {
     var state = "7";
     var scope = "user-read-private user-read-email user-top-read";
-
+    let urlString = new URLSearchParams({
+        response_type: "code",
+        client_id: keys.client_id,
+        scope: scope,
+        redirect_uri: keys.redirect_uri,
+        state: state,
+    });
     res.redirect(
-        "https://accounts.spotify.com/authorize?" +
-            querystring.stringify({
-                response_type: "code",
-                client_id: keys.client_id,
-                scope: scope,
-                redirect_uri: keys.redirect_uri,
-                state: state,
-            })
+        "https://accounts.spotify.com/authorize?" + urlString.toString()
     );
 });
 
 app.get("/callback", function (req, res) {
     var code = req.query.code || null;
     var state = req.query.state || null;
+    let urlString = new URLSearchParams({
+        error: "state_mismatch",
+    });
     if (state === null) {
-        res.redirect(
-            "/#" +
-                querystring.stringify({
-                    error: "state_mismatch",
-                })
-        );
+        res.redirect("/#" + urlString.toString());
     } else {
         var authOptions = {
             url: "https://accounts.spotify.com/api/token",
