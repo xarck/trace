@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -10,6 +12,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Home"),
+      ),
+      body: Text("Hello world"),
+    );
   }
 }

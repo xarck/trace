@@ -5,14 +5,12 @@ const keys = require("./config.js");
 var app = express();
 
 app.get("/login", function (req, res) {
-    var state = "7";
     var scope = "user-read-private user-read-email user-top-read";
     let urlString = new URLSearchParams({
         response_type: "code",
         client_id: keys.client_id,
         scope: scope,
         redirect_uri: keys.redirect_uri,
-        state: state,
     });
     res.redirect(
         "https://accounts.spotify.com/authorize?" + urlString.toString()
@@ -21,33 +19,25 @@ app.get("/login", function (req, res) {
 
 app.get("/callback", function (req, res) {
     var code = req.query.code || null;
-    var state = req.query.state || null;
-    let urlString = new URLSearchParams({
-        error: "state_mismatch",
+    var authOptions = {
+        url: "https://accounts.spotify.com/api/token",
+        form: {
+            code: code,
+            redirect_uri: keys.redirect_uri,
+            grant_type: "authorization_code",
+        },
+        headers: {
+            Authorization:
+                "Basic " +
+                new Buffer(keys.client_id + ":" + keys.client_secret).toString(
+                    "base64"
+                ),
+        },
+        json: true,
+    };
+    request.post(authOptions, (req, _, body) => {
+        res.json(body);
     });
-    if (state === null) {
-        res.redirect("/#" + urlString.toString());
-    } else {
-        var authOptions = {
-            url: "https://accounts.spotify.com/api/token",
-            form: {
-                code: code,
-                redirect_uri: keys.redirect_uri,
-                grant_type: "authorization_code",
-            },
-            headers: {
-                Authorization:
-                    "Basic " +
-                    new Buffer(
-                        keys.client_id + ":" + keys.client_secret
-                    ).toString("base64"),
-            },
-            json: true,
-        };
-        request.post(authOptions, (req, _, body) => {
-            res.json(body);
-        });
-    }
 });
 app.get("/refresh_token", function (req, res) {
     var authOptions = {
