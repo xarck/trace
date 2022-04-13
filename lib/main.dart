@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:trace/views/auth/login_view.dart';
+import 'package:provider/provider.dart';
+import 'package:trace/controllers/auth_controller.dart';
+import 'package:trace/controllers/media_controller.dart';
+import 'package:trace/views/login_view.dart';
 import 'package:trace/views/dashboard.dart';
 
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('auth');
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => MediaController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AuthController(),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -18,12 +33,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var token = '';
+  bool token = true;
+
+  authentication() async {
+    AuthController ac = Provider.of(context, listen: false);
+    token = await ac.checkLogin();
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-    Box authBox = Hive.box('auth');
-    token = authBox.get('access_token', defaultValue: '');
+    authentication();
   }
 
   Widget build(BuildContext context) {
@@ -33,7 +54,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.red,
       ),
       debugShowCheckedModeBanner: false,
-      home: token.length == 0 ? LoginView() : Dashboard(),
+      home: token ? Dashboard() : LoginView(),
     );
   }
 }
