@@ -23,6 +23,7 @@ class MediaController extends ChangeNotifier {
     } catch (err) {
       print(err.toString());
     }
+    notifyListeners();
   }
 
   fetchArtists() async {
@@ -41,5 +42,6 @@ class MediaController extends ChangeNotifier {
     } catch (err) {
       print(err.toString());
     }
+    notifyListeners();
   }
 }

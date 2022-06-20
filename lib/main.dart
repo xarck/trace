@@ -38,6 +38,7 @@ class _MyAppState extends State<MyApp> {
   authentication() async {
     AuthController ac = Provider.of(context, listen: false);
     token = await ac.checkLogin();
+    print(token);
     setState(() {});
   }
 
