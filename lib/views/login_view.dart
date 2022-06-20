@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:trace/constants/api_constant.dart';
+import 'package:trace/views/dashboard.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginView extends StatelessWidget {
@@ -11,21 +12,28 @@ class LoginView extends StatelessWidget {
 
   final _key = UniqueKey();
   var _controller;
-  void readJS() async {
+
+  void readJS(BuildContext context) async {
     String html = await _controller.evaluateJavascript(
         "window.document.getElementsByTagName('pre')[0].innerHTML;");
     Map valMap = json.decode(json.decode(html));
     Box authBox = Hive.box('auth');
     authBox.put('access_token', valMap['access_token']);
     authBox.put('refresh_token', valMap['refresh_token']);
-    authBox.put('authenticated', true);
+    authBox.put('authorized', true);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Dashboard(),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Hello World"),
+        title: Text("Login"),
         backgroundColor: Colors.transparent,
       ),
       body: Column(
@@ -40,7 +48,7 @@ class LoginView extends StatelessWidget {
               },
               onPageStarted: (String url) async {
                 if (url.contains('/callback')) {
-                  readJS();
+                  readJS(context);
                 }
               },
             ),

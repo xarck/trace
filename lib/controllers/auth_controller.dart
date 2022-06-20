@@ -4,27 +4,28 @@ import 'package:hive/hive.dart';
 import 'package:trace/constants/api_constant.dart';
 
 class AuthController extends ChangeNotifier {
-  bool isAuthenticated = false;
-
   Future<bool> checkLogin() async {
     Box authBox = Hive.box('auth');
-    var token = authBox.get('access_token');
-    if (token.length != 0) {
-      await fetchToken();
-      return true;
+    var isAuthorized = authBox.get('authorized', defaultValue: false);
+    if (isAuthorized) {
+      return await fetchToken();
     }
     return false;
   }
 
   fetchToken() async {
+    Box authBox = Hive.box('auth');
     try {
-      Box authBox = Hive.box('auth');
       String refreshToken = authBox.get('refresh_token');
       Response response = await Dio()
           .get('$api_domain/refresh_token?refresh_token=$refreshToken');
       authBox.put('access_token', response.data);
+      return true;
     } catch (err) {
-      print(err.toString());
+      authBox.put("access_token", null);
+      authBox.put('refresh_token', null);
+      authBox.put('authorized', false);
+      return false;
     }
   }
 

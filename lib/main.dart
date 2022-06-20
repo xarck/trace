@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:trace/controllers/auth_controller.dart';
@@ -33,11 +32,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool token = true;
+  bool token = false;
+  bool loading = true;
 
   authentication() async {
-    AuthController ac = Provider.of(context, listen: false);
+    AuthController ac = Provider.of<AuthController>(context, listen: false);
     token = await ac.checkLogin();
+    loading = false;
     setState(() {});
   }
 
@@ -47,11 +48,12 @@ class _MyAppState extends State<MyApp> {
     authentication();
   }
 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Trace',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.purple,
       ),
       debugShowCheckedModeBanner: false,
       home: token ? Dashboard() : LoginView(),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:trace/utils/dimension.dart';
-import 'package:trace/views/chart_view.dart';
+import 'package:trace/views/history_view.dart';
 import 'package:trace/views/home_view.dart';
-import 'package:trace/views/library_view.dart';
+import 'package:trace/views/profile_view.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard({Key? key}) : super(key: key);
@@ -14,9 +14,9 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
-    Home(),
-    Chart(),
-    Library(),
+    HomeView(),
+    HistoryView(),
+    ProfileView(),
   ];
   _onItemTapped(index) {
     setState(() {
@@ -45,11 +45,11 @@ class _DashboardState extends State<Dashboard> {
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
-            label: 'Chart',
+            label: 'History',
             icon: Icon(Icons.charging_station),
           ),
           BottomNavigationBarItem(
-            label: 'Library',
+            label: 'Profile',
             icon: Icon(Icons.bookmark),
           ),
         ],
