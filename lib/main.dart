@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
   authentication() async {
     AuthController ac = Provider.of(context, listen: false);
     token = await ac.checkLogin();
-    print(token);
+    // print(token);
     setState(() {});
   }
 
@@ -51,9 +51,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Trace',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
+      theme: ThemeData(),
       debugShowCheckedModeBanner: false,
       home: token ? Dashboard() : LoginView(),
     );

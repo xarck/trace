@@ -12,7 +12,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   fetchResults() async {
     MediaController mc = Provider.of<MediaController>(context, listen: false);
-    await mc.fetchArtists();
+    await mc.fetchCurrentlyPlaying();
+    await mc.fetchRecentlyPlayed();
   }
 
   @override
@@ -29,7 +30,7 @@ class _HomeState extends State<Home> {
       ),
       body: SingleChildScrollView(
         child: Consumer<MediaController>(builder: (context, data, child) {
-          print(data.topArtists?.items?[0].name);
+          print(data.currentlyPlaying?.item?.name);
           return Container();
         }),
       ),
