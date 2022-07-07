@@ -54,11 +54,11 @@ class MediaController extends ChangeNotifier {
     }
   }
 
-  fetchRecentlyPlayed() async {
+  fetchRecentlyPlayed({int limit = 20}) async {
     try {
       String token = Hive.box('auth').get('access_token');
       Response response = await Dio().get(
-        'https://api.spotify.com/v1/me/player/recently-played',
+        'https://api.spotify.com/v1/me/player/recently-played?limit=$limit',
         options: Options(
           headers: {
             'Authorization': "Bearer $token",
