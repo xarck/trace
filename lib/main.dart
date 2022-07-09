@@ -53,12 +53,17 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         fontFamily: "Proxima",
         brightness: Brightness.dark,
+        primarySwatch: Colors.green,
         scaffoldBackgroundColor: Colors.black,
         textTheme: TextTheme(
-          bodyText1: TextStyle(
-            fontSize: 24,
-          ),
-        ),
+            labelMedium: TextStyle(
+              fontSize: 18,
+              color: Colors.white24,
+            ),
+            labelLarge: TextStyle(
+              fontSize: 18,
+              color: Colors.white54,
+            )),
       ),
       debugShowCheckedModeBanner: false,
       home: token ? Dashboard() : LoginView(),

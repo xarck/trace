@@ -46,11 +46,11 @@ class _DashboardState extends State<Dashboard> {
           ),
           BottomNavigationBarItem(
             label: 'Library',
-            icon: Icon(Icons.bookmark),
+            icon: Icon(Icons.trending_up_sharp),
           ),
           BottomNavigationBarItem(
             label: 'Profile',
-            icon: Icon(Icons.charging_station),
+            icon: Icon(Icons.person),
           ),
         ],
         currentIndex: _selectedIndex,

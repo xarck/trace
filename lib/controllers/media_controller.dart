@@ -16,7 +16,7 @@ class MediaController extends ChangeNotifier {
   Profile? profile;
 
   fetchTracks(
-      {int limit = 30, int offset = 0, String range = 'short_term'}) async {
+      {int limit = 50, int offset = 0, String range = 'long_term'}) async {
     try {
       String token = Hive.box('auth').get('access_token');
       Response response = await Dio().get(
@@ -35,7 +35,7 @@ class MediaController extends ChangeNotifier {
   }
 
   fetchArtists(
-      {int limit = 30, int offset = 0, String range = 'short_term'}) async {
+      {int limit = 50, int offset = 0, String range = 'long_term'}) async {
     try {
       String token = Hive.box('auth').get('access_token');
       Response response = await Dio().get(
