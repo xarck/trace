@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:trace/controllers/auth_controller.dart';
+import 'package:trace/controllers/basic_controller.dart';
 import 'package:trace/controllers/media_controller.dart';
 import 'package:trace/views/login_view.dart';
 import 'package:trace/views/dashboard.dart';
@@ -19,6 +19,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => AuthController(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => BasicController(),
+        )
       ],
       child: MyApp(),
     ),
@@ -54,16 +57,29 @@ class _MyAppState extends State<MyApp> {
         fontFamily: "Proxima",
         brightness: Brightness.dark,
         primarySwatch: Colors.green,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.black,
+        ),
         scaffoldBackgroundColor: Colors.black,
         textTheme: TextTheme(
-            labelMedium: TextStyle(
-              fontSize: 18,
-              color: Colors.white24,
-            ),
-            labelLarge: TextStyle(
-              fontSize: 18,
-              color: Colors.white54,
-            )),
+          titleMedium: TextStyle(
+            fontSize: 22,
+            color: Colors.white70,
+          ),
+          displayLarge: TextStyle(
+            fontSize: 18,
+            color: Colors.white54,
+          ),
+          labelMedium: TextStyle(
+            fontSize: 16,
+            color: Colors.white24,
+          ),
+          labelLarge: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            color: Colors.white54,
+          ),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: token ? Dashboard() : LoginView(),

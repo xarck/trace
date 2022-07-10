@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trace/controllers/basic_controller.dart';
 
 import 'package:trace/controllers/media_controller.dart';
 import 'package:trace/models/artist_model.dart';
@@ -17,10 +18,11 @@ class Library extends StatefulWidget {
 class _LibraryState extends State<Library> with SingleTickerProviderStateMixin {
   String target = "Tracks";
   TabController? _tabController;
+  late BasicController bc;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    bc = Provider.of<BasicController>(context, listen: false);
     TabController(length: 3, vsync: this);
     fetchResults();
   }
@@ -37,7 +39,15 @@ class _LibraryState extends State<Library> with SingleTickerProviderStateMixin {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.grid_3x3),
+            onPressed: () {
+              bc.setTopTarget();
+              print("pressed");
+            },
+          ),
           title: Text("Top $target"),
+          centerTitle: true,
           bottom: TabBar(
             controller: _tabController,
             tabs: const [
@@ -50,8 +60,16 @@ class _LibraryState extends State<Library> with SingleTickerProviderStateMixin {
           builder: (context, data, child) {
             return TabBarView(
               children: [
-                TopTracksView(topTracks: data.topTracks!),
-                TopArtistsView(topArtists: data.topArtists!),
+                data.isLoading == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : TopTracksView(topTracks: data.topTracks!),
+                data.isLoading == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : TopArtistsView(topArtists: data.topArtists!),
               ],
             );
           },

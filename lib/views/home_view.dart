@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:trace/controllers/media_controller.dart';
 import 'package:trace/models/currently_playing_model.dart';
 import 'package:trace/models/recently_played_model.dart';
+import 'package:trace/utils/dimension.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -32,19 +33,23 @@ class _HomeState extends State<Home> {
         title: Text("Home"),
       ),
       body: SingleChildScrollView(
-        child: Consumer<MediaController>(builder: (context, data, child) {
-          return Container(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: [
-                CurrentlyPlayingView(
-                  currentSong: data.currentlyPlaying,
-                ),
-                RecentlyPlayedView(recentlyPlayed: data.recentlyPlayed)
-              ],
-            ),
-          );
-        }),
+        child: Consumer<MediaController>(
+          builder: (context, data, child) {
+            return Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  CurrentlyPlayingView(
+                    currentSong: data.currentlyPlaying,
+                  ),
+                  RecentlyPlayedView(
+                    recentlyPlayed: data.recentlyPlayed,
+                  )
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -70,32 +75,52 @@ class _CurrentlyPlayingViewState extends State<CurrentlyPlayingView> {
             ? Text("You aren't playing any song right now")
             : Container(
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 1,
-                    color: Colors.black,
-                  ),
+                  color: Colors.blueGrey.shade800,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Currently Playing"),
+                    Text(
+                      "Currently Playing on Spotify",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.network(
-                          "${widget.currentSong?.item?.album?.images?[0].url}",
-                          height: 130,
-                          width: 130,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            "${widget.currentSong?.item?.album?.images?[0].url}",
+                            height: 130,
+                            width: 130,
+                          ),
                         ),
-                        Spacer(),
-                        Column(
-                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("${widget.currentSong?.item?.name}"),
-                            Text("${widget.currentSong?.item?.album?.name}"),
-                            Text(
-                                "${widget.currentSong?.item?.artists?[0].name}")
-                          ],
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+                          width: getSize(context).width / 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${widget.currentSong?.item?.name}",
+                                overflow: TextOverflow.fade,
+                                style: Theme.of(context).textTheme.displayLarge,
+                              ),
+                              Text(
+                                "${widget.currentSong?.item?.album?.name}",
+                                style: Theme.of(context).textTheme.displayLarge,
+                              ),
+                              Text(
+                                "${widget.currentSong?.item?.artists?[0].name}",
+                                style: Theme.of(context).textTheme.displayLarge,
+                              ),
+                            ],
+                          ),
                         )
                       ],
                     )
@@ -119,48 +144,78 @@ class RecentlyPlayedView extends StatefulWidget {
 class _RecentlyPlayedViewState extends State<RecentlyPlayedView> {
   @override
   Widget build(BuildContext context) {
-    // print(DateTime.parse("${widget.recentlyPlayed?.items?[0].playedAt}"));
     return widget.recentlyPlayed == null
-        ? CircularProgressIndicator()
-        : Column(
-            children: [
-              Container(
-                margin: EdgeInsets.all(20),
-                child: Text(
-                  "Recently Played",
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : Container(
+            margin: EdgeInsets.only(top: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: Text(
+                    "Recently Played on Spotify",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                 ),
-              ),
-              ListView.builder(
-                itemCount: widget.recentlyPlayed?.items?.length,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        Image.network(
-                          "${widget.recentlyPlayed?.items?[index].track?.album?.images?[0].url}",
-                          height: 60,
-                          width: 60,
-                        ),
-                        SizedBox(width: 30),
-                        Column(
-                          children: [
-                            Text(
-                              "${widget.recentlyPlayed?.items?[index].track?.name}",
+                ListView.builder(
+                  itemCount: widget.recentlyPlayed?.items?.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.shade800,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              "${widget.recentlyPlayed?.items?[index].track?.album?.images?[0].url}",
+                              height: 60,
+                              width: 60,
                             ),
-                            Text(
-                              "${widget.recentlyPlayed?.items?[index].track?.artists?[0].name}",
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  );
-                },
-              )
-            ],
+                          ),
+                          SizedBox(width: 10),
+                          Container(
+                            width: getSize(context).width / 1.5,
+                            height: 60,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  "${widget.recentlyPlayed?.items?[index].track?.name}",
+                                  style:
+                                      Theme.of(context).textTheme.displayLarge,
+                                ),
+                                // Spacer(),
+                                Text(
+                                  "${widget.recentlyPlayed?.items?[index].track?.artists?[0].name}",
+                                  style:
+                                      Theme.of(context).textTheme.displayLarge,
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
           );
   }
 }

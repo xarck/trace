@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
@@ -14,10 +16,13 @@ class MediaController extends ChangeNotifier {
   RecentlyPlayed? recentlyPlayed;
   CurrentlyPlayingModel? currentlyPlaying;
   Profile? profile;
+  bool isLoading = true;
 
   fetchTracks(
       {int limit = 50, int offset = 0, String range = 'long_term'}) async {
     try {
+      // isLoading = true;
+      // notifyListeners();
       String token = Hive.box('auth').get('access_token');
       Response response = await Dio().get(
         'https://api.spotify.com/v1/me/top/tracks?limit=$limit&offset=$offset&time_range=$range',
@@ -28,6 +33,7 @@ class MediaController extends ChangeNotifier {
         ),
       );
       topTracks = TopTracks.fromJson(response.data);
+      isLoading = false;
       notifyListeners();
     } catch (err) {
       print(err.toString());
@@ -37,6 +43,8 @@ class MediaController extends ChangeNotifier {
   fetchArtists(
       {int limit = 50, int offset = 0, String range = 'long_term'}) async {
     try {
+      // isLoading = true;
+      // notifyListeners();
       String token = Hive.box('auth').get('access_token');
       Response response = await Dio().get(
         'https://api.spotify.com/v1/me/top/artists?limit=$limit&offset=$offset&time_range=$range',
@@ -46,15 +54,15 @@ class MediaController extends ChangeNotifier {
           },
         ),
       );
-
       topArtists = TopArtists.fromJson(response.data);
+      isLoading = false;
       notifyListeners();
     } catch (err) {
       print(err.toString());
     }
   }
 
-  fetchRecentlyPlayed({int limit = 20}) async {
+  fetchRecentlyPlayed({int limit = 50}) async {
     try {
       String token = Hive.box('auth').get('access_token');
       Response response = await Dio().get(
