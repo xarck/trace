@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:trace/controllers/basic_controller.dart';
 
 import 'package:trace/controllers/media_controller.dart';
-import 'package:trace/models/artist_model.dart';
-import 'package:trace/models/track_model.dart';
 import 'package:trace/views/library_views/top_artists_view.dart';
 import 'package:trace/views/library_views/top_tracks_view.dart';
 

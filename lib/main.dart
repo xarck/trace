@@ -36,12 +36,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool token = true;
-
   authentication() async {
     AuthController ac = Provider.of(context, listen: false);
-    token = await ac.checkLogin();
-    setState(() {});
+    await ac.checkLogin();
   }
 
   @override
@@ -50,6 +47,7 @@ class _MyAppState extends State<MyApp> {
     authentication();
   }
 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Trace',
@@ -82,7 +80,11 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: token ? Dashboard() : LoginView(),
+      home: Consumer<AuthController>(
+        builder: (context, data, child) {
+          return data.isAuthenticated ? Dashboard() : LoginView();
+        },
+      ),
     );
   }
 }
