@@ -30,5 +30,7 @@ linter:
         unnecessary_this: false
         unnecessary_new: false
         prefer_collection_literals: false
+        non_constant_identifier_names: false
+        sized_box_for_whitespace: false
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

@@ -1,31 +1,40 @@
-import 'dart:convert';
-
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trace/constants/api_constant.dart';
+import 'package:trace/controllers/auth_controller.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   LoginView({Key? key}) : super(key: key);
 
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
   final _key = UniqueKey();
-  var _controller;
+
+  late AuthController ac;
+
+  late dynamic _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    ac = Provider.of<AuthController>(context, listen: false);
+  }
+
   void readJS() async {
     String html = await _controller.evaluateJavascript(
         "window.document.getElementsByTagName('pre')[0].innerHTML;");
-    Map valMap = json.decode(json.decode(html));
-    Box authBox = Hive.box('auth');
-    authBox.put('access_token', valMap['access_token']);
-    authBox.put('refresh_token', valMap['refresh_token']);
-    authBox.put('authenticated', true);
+    ac.authorize(html);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Hello World"),
+        title: Text("Login"),
         backgroundColor: Colors.transparent,
       ),
       body: Column(
