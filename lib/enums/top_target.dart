@@ -1,0 +1,1 @@
+enum TopTarget { GRID, LIST }

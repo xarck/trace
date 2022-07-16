@@ -1,16 +1,23 @@
-import 'dart:convert';
-
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trace/constants/api_constant.dart';
+<<<<<<< HEAD
 import 'package:trace/views/dashboard.dart';
+=======
+import 'package:trace/controllers/auth_controller.dart';
+>>>>>>> building
 import 'package:webview_flutter/webview_flutter.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   LoginView({Key? key}) : super(key: key);
 
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
   final _key = UniqueKey();
+<<<<<<< HEAD
   var _controller;
 
   void readJS(BuildContext context) async {
@@ -27,6 +34,23 @@ class LoginView extends StatelessWidget {
         builder: (context) => Dashboard(),
       ),
     );
+=======
+
+  late AuthController ac;
+
+  late dynamic _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    ac = Provider.of<AuthController>(context, listen: false);
+  }
+
+  void readJS() async {
+    String html = await _controller.evaluateJavascript(
+        "window.document.getElementsByTagName('pre')[0].innerHTML;");
+    ac.authorize(html);
+>>>>>>> building
   }
 
   @override

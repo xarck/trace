@@ -31,6 +31,10 @@ linter:
         unnecessary_new: false
         prefer_collection_literals: false
         non_constant_identifier_names: false
+<<<<<<< HEAD
         prefer_const_literals_to_create_immutables: false
+=======
+        sized_box_for_whitespace: false
+>>>>>>> building
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
