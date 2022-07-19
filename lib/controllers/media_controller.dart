@@ -15,6 +15,7 @@ class MediaController extends ChangeNotifier {
   CurrentlyPlayingModel? currentlyPlaying;
   Profile? profile;
   bool isLoading = true;
+  bool freshSongPlaying = false;
 
   fetchTracks(
       {int limit = 50, int offset = 0, String range = 'long_term'}) async {
@@ -85,7 +86,13 @@ class MediaController extends ChangeNotifier {
           },
         ),
       );
-      currentlyPlaying = CurrentlyPlayingModel.fromJson(response.data);
+      if (response.data == "") {
+        currentlyPlaying = null;
+        freshSongPlaying = true;
+      } else {
+        currentlyPlaying = CurrentlyPlayingModel.fromJson(response.data);
+        freshSongPlaying = false;
+      }
       notifyListeners();
     } catch (err) {
       print(err.toString());

@@ -53,8 +53,13 @@ class _DashboardState extends State<Dashboard> {
             icon: Icon(Icons.person),
           ),
         ],
+        backgroundColor: Colors.black,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        iconSize: 26.0,
+        selectedFontSize: 16.0,
+        selectedItemColor: Colors.green,
+        unselectedFontSize: 16.0,
       ),
     );
   }

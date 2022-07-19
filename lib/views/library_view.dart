@@ -41,13 +41,14 @@ class _LibraryState extends State<Library> with SingleTickerProviderStateMixin {
             icon: Icon(Icons.grid_3x3),
             onPressed: () {
               bc.setTopTarget();
-              print("pressed");
             },
           ),
           title: Text("Top $target"),
           centerTitle: true,
           bottom: TabBar(
             controller: _tabController,
+            labelStyle: Theme.of(context).textTheme.displayLarge,
+            indicatorColor: Colors.green,
             tabs: const [
               Tab(text: 'Tracks'),
               Tab(text: "Artists"),
