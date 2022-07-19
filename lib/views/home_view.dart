@@ -41,6 +41,7 @@ class _HomeState extends State<Home> {
                 children: [
                   CurrentlyPlayingView(
                     currentSong: data.currentlyPlaying,
+                    freshSongPlaying: data.freshSongPlaying,
                   ),
                   RecentlyPlayedView(
                     recentlyPlayed: data.recentlyPlayed,
@@ -57,10 +58,10 @@ class _HomeState extends State<Home> {
 
 class CurrentlyPlayingView extends StatefulWidget {
   final CurrentlyPlayingModel? currentSong;
-  CurrentlyPlayingView({
-    Key? key,
-    required this.currentSong,
-  }) : super(key: key);
+  late bool freshSongPlaying;
+  CurrentlyPlayingView(
+      {Key? key, required this.currentSong, required this.freshSongPlaying})
+      : super(key: key);
 
   @override
   State<CurrentlyPlayingView> createState() => _CurrentlyPlayingViewState();
@@ -69,10 +70,22 @@ class CurrentlyPlayingView extends StatefulWidget {
 class _CurrentlyPlayingViewState extends State<CurrentlyPlayingView> {
   @override
   Widget build(BuildContext context) {
-    return widget.currentSong == null
+    return widget.currentSong == null && widget.freshSongPlaying != true
         ? CircularProgressIndicator()
-        : widget.currentSong?.isPlaying == false
-            ? Text("You aren't playing any song right now")
+        : widget.currentSong?.isPlaying == false ||
+                widget.freshSongPlaying == true
+            ? Container(
+                margin: EdgeInsets.all(5),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.blueGrey.shade800,
+                ),
+                child: Text(
+                  "You aren't playing any song right now",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              )
             : Container(
                 decoration: BoxDecoration(
                   color: Colors.blueGrey.shade800,

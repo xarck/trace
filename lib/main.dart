@@ -54,7 +54,15 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         fontFamily: "Proxima",
         brightness: Brightness.dark,
+        bottomAppBarColor: Colors.black,
         primarySwatch: Colors.green,
+        focusColor: Colors.green,
+        splashColor: Colors.green,
+        tabBarTheme: TabBarTheme(
+          // indicatorSize: ,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white,
+        ),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.black,
         ),
@@ -63,6 +71,10 @@ class _MyAppState extends State<MyApp> {
           titleMedium: TextStyle(
             fontSize: 22,
             color: Colors.white70,
+          ),
+          displayMedium: TextStyle(
+            fontSize: 18,
+            color: Colors.white,
           ),
           displayLarge: TextStyle(
             fontSize: 18,
