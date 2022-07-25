@@ -1,16 +1,17 @@
-# trace
+# App To Check Your Spotify Stats
 
-A new Flutter project.
+---
 
-## Getting Started
+## **NOTE:**
 
-This project is a starting point for a Flutter application.
+Login With Your Spotify Account. After that close the app and start again then the app will be working.<br />
+If App is showing glitch is loading then that means sever is starting.<br />
+If the app is showing some small text then you have to restart the app again. <br/>
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+# Screenshots
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="https://github.com/xarck/trace/blob/master/screenshots/1.png?raw=true" height="800" width="450">
+<img src="https://github.com/xarck/trace/blob/master/screenshots/2.png?raw=true" height="800" width="450">
+<img src="https://github.com/xarck/trace/blob/master/screenshots/3.png?raw=true" height="800" width="450">
