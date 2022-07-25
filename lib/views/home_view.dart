@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +59,7 @@ class _HomeState extends State<Home> {
 
 class CurrentlyPlayingView extends StatefulWidget {
   final CurrentlyPlayingModel? currentSong;
-  late bool freshSongPlaying;
+  final bool freshSongPlaying;
   CurrentlyPlayingView(
       {Key? key, required this.currentSong, required this.freshSongPlaying})
       : super(key: key);
@@ -88,7 +89,7 @@ class _CurrentlyPlayingViewState extends State<CurrentlyPlayingView> {
               )
             : Container(
                 decoration: BoxDecoration(
-                  color: Colors.blueGrey.shade800,
+                  color: Colors.black,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 padding: EdgeInsets.all(5),
@@ -107,10 +108,17 @@ class _CurrentlyPlayingViewState extends State<CurrentlyPlayingView> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                            "${widget.currentSong?.item?.album?.images?[0].url}",
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                "${widget.currentSong?.item?.album?.images?[0].url}",
                             height: 130,
                             width: 130,
+                            placeholder: (context, url) => Container(
+                              padding: EdgeInsets.all(30),
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
                           ),
                         ),
                         Container(
@@ -186,7 +194,7 @@ class _RecentlyPlayedViewState extends State<RecentlyPlayedView> {
                       padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey.shade800,
+                        color: Colors.black,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -194,10 +202,17 @@ class _RecentlyPlayedViewState extends State<RecentlyPlayedView> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              "${widget.recentlyPlayed?.items?[index].track?.album?.images?[0].url}",
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  "${widget.recentlyPlayed?.items?[index].track?.album?.images?[0].url}",
                               height: 60,
                               width: 60,
+                              placeholder: (context, url) => Container(
+                                padding: EdgeInsets.all(10),
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
                             ),
                           ),
                           SizedBox(width: 10),

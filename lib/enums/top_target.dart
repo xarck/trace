@@ -1,1 +1,4 @@
-enum TopTarget { GRID, LIST }
+enum TopTarget {
+  GRID,
+  LIST,
+}

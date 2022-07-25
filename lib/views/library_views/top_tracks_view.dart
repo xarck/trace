@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trace/controllers/basic_controller.dart';
 import 'package:trace/controllers/media_controller.dart';
+import 'package:trace/enums/time_period.dart';
 import 'package:trace/enums/top_target.dart';
 import 'package:trace/models/track_model.dart';
 
@@ -45,16 +47,23 @@ class _TopTracksViewState extends State<TopTracksView> {
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey.shade800,
+                              color: Colors.black,
                             ),
                             child: Row(
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    "${currItem?.album?.images?[0].url}",
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        "${currItem?.album?.images?[0].url}",
                                     height: 60,
                                     width: 60,
+                                    placeholder: (context, url) => Container(
+                                      padding: EdgeInsets.all(10),
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
                                   ),
                                 ),
                                 SizedBox(width: 10),
@@ -88,10 +97,16 @@ class _TopTracksViewState extends State<TopTracksView> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(20),
-                              child: Image.network(
-                                "${track.album?.images?[0].url}",
+                              child: CachedNetworkImage(
+                                imageUrl: "${track.album?.images?[0].url}",
                                 height: 120,
                                 width: 120,
+                                placeholder: (context, url) => Container(
+                                  padding: EdgeInsets.all(30),
+                                  child: CircularProgressIndicator(),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
                               ),
                             ),
                             Row(
@@ -131,19 +146,40 @@ class _TopTracksViewState extends State<TopTracksView> {
                   onPressed: () async {
                     await mc?.fetchTracks(range: 'short_term');
                   },
-                  child: Text("4 Weeks"),
+                  child: Text(
+                    "4 Weeks",
+                    style: TextStyle(
+                      color: convertTermToTimePeriod('short_term') == mc?.tp
+                          ? Colors.blue
+                          : Colors.green,
+                    ),
+                  ),
                 ),
                 TextButton(
                   onPressed: () async {
                     await mc?.fetchTracks(range: 'medium_term');
                   },
-                  child: Text("6 Months"),
+                  child: Text(
+                    "6 Months",
+                    style: TextStyle(
+                      color: convertTermToTimePeriod('medium_term') == mc?.tp
+                          ? Colors.blue
+                          : Colors.green,
+                    ),
+                  ),
                 ),
                 TextButton(
                   onPressed: () async {
                     await mc?.fetchTracks(range: 'long_term');
                   },
-                  child: Text("All Time"),
+                  child: Text(
+                    "All Time",
+                    style: TextStyle(
+                      color: convertTermToTimePeriod('long_term') == mc?.tp
+                          ? Colors.blue
+                          : Colors.green,
+                    ),
+                  ),
                 )
               ],
             ),

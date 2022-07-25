@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+import 'package:trace/enums/time_period.dart';
 import 'package:trace/models/artist_model.dart';
 import 'package:trace/models/currently_playing_model.dart';
 import 'package:trace/models/recently_played_model.dart';
@@ -16,6 +17,7 @@ class MediaController extends ChangeNotifier {
   Profile? profile;
   bool isLoading = true;
   bool freshSongPlaying = false;
+  TimePeriod tp = TimePeriod.ALLTIME;
 
   fetchTracks(
       {int limit = 50, int offset = 0, String range = 'long_term'}) async {
@@ -31,6 +33,7 @@ class MediaController extends ChangeNotifier {
       );
       topTracks = TopTracks.fromJson(response.data);
       isLoading = false;
+      tp = tp.convert(range);
       notifyListeners();
     } catch (err) {
       print(err.toString());
@@ -51,6 +54,7 @@ class MediaController extends ChangeNotifier {
       );
       topArtists = TopArtists.fromJson(response.data);
       isLoading = false;
+      tp = tp.convert(range);
       notifyListeners();
     } catch (err) {
       print(err.toString());

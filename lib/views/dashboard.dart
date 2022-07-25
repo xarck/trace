@@ -32,10 +32,7 @@ class _DashboardState extends State<Dashboard> {
         height: getSize(context).height,
         width: getSize(context).width,
         child: Center(
-          child: IndexedStack(
-            index: _selectedIndex,
-            children: _widgetOptions,
-          ),
+          child: _widgetOptions.elementAt(_selectedIndex),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

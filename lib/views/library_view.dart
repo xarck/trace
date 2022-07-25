@@ -42,9 +42,9 @@ class _LibraryState extends State<Library> with SingleTickerProviderStateMixin {
             onPressed: () {
               bc.setTopTarget();
             },
+            tooltip: 'View',
           ),
-          title: Text("Top $target"),
-          centerTitle: true,
+          title: Text("Library"),
           bottom: TabBar(
             controller: _tabController,
             labelStyle: Theme.of(context).textTheme.displayLarge,

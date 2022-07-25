@@ -2,7 +2,7 @@
     package="com.example.trace">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="trace"
+        android:label="Trace"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
