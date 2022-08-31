@@ -39,14 +39,15 @@ class RecentlyPlayed {
 class Items {
   Track? track;
   String? playedAt;
-  String? context;
+  Context? context;
 
   Items({this.track, this.playedAt, this.context});
 
   Items.fromJson(Map<String, dynamic> json) {
     track = json['track'] != null ? new Track.fromJson(json['track']) : null;
     playedAt = json['played_at'];
-    context = json['context'];
+    context =
+        json['context'] != null ? new Context.fromJson(json['context']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -55,7 +56,9 @@ class Items {
       data['track'] = this.track!.toJson();
     }
     data['played_at'] = this.playedAt;
-    data['context'] = this.context;
+    if (this.context != null) {
+      data['context'] = this.context!.toJson();
+    }
     return data;
   }
 }
@@ -327,6 +330,35 @@ class ExternalIds {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['isrc'] = this.isrc;
+    return data;
+  }
+}
+
+class Context {
+  String? type;
+  ExternalUrls? externalUrls;
+  String? href;
+  String? uri;
+
+  Context({this.type, this.externalUrls, this.href, this.uri});
+
+  Context.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    externalUrls = json['external_urls'] != null
+        ? new ExternalUrls.fromJson(json['external_urls'])
+        : null;
+    href = json['href'];
+    uri = json['uri'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    if (this.externalUrls != null) {
+      data['external_urls'] = this.externalUrls!.toJson();
+    }
+    data['href'] = this.href;
+    data['uri'] = this.uri;
     return data;
   }
 }
