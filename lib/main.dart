@@ -38,7 +38,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   authentication() async {
     AuthController ac = Provider.of(context, listen: false);
-    await ac.checkLogin();
+    await ac.checkLogin(context);
   }
 
   @override
