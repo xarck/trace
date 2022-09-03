@@ -5,8 +5,7 @@
 ## **NOTE:**
 
 Login With Your Spotify Account. After that close the app and start again then the app will be working.<br />
-If App is showing glitch is loading then that means sever is starting.<br />
-If the app is showing some small text then you have to restart the app again. <br/>
+If App is showing "Glitch is Loading" then that means sever is starting.<br />
 
 ---
 

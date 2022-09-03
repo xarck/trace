@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trace/controllers/auth_controller.dart';
 import 'package:trace/controllers/media_controller.dart';
 
 class Profile extends StatefulWidget {
@@ -11,11 +12,12 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   late MediaController mc;
-
+  late AuthController ac;
   @override
   void initState() {
     super.initState();
     mc = Provider.of<MediaController>(context, listen: false);
+    ac = Provider.of<AuthController>(context, listen: false);
     fetchProfile();
   }
 
@@ -85,6 +87,12 @@ class _ProfileState extends State<Profile> {
                           ],
                         ),
                       ],
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        ac.logout(context);
+                      },
+                      child: Text("Logout"),
                     )
                   ],
                 );
