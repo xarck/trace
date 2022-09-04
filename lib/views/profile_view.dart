@@ -90,7 +90,7 @@ class _ProfileState extends State<Profile> {
                     ),
                     TextButton(
                       onPressed: () {
-                        ac.logout(context);
+                        ac.logout();
                       },
                       child: Text("Logout"),
                     )

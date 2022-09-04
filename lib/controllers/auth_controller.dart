@@ -4,23 +4,22 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:trace/constants/api_constant.dart';
-import 'package:trace/views/dashboard.dart';
-import 'package:trace/views/login_view.dart';
+import 'package:trace/main.dart';
 
 class AuthController extends ChangeNotifier {
   late bool isAuthenticated = false;
 
-  Future<bool> checkLogin(BuildContext context) async {
+  Future<bool> checkLogin() async {
     Box authBox = Hive.box('auth');
     var token = authBox.get('access_token');
     if (token == null) {
       isAuthenticated = false;
       return false;
     } else if (token.length != 0) {
-      await fetchToken(context);
+      await fetchToken();
       return true;
     }
-    logout(context);
+    logout();
     return false;
   }
 
@@ -35,35 +34,25 @@ class AuthController extends ChangeNotifier {
     return true;
   }
 
-  fetchToken(BuildContext context) async {
+  fetchToken() async {
     try {
       Box authBox = Hive.box('auth');
       String refreshToken = authBox.get('refresh_token');
       Response response = await Dio()
           .get('$api_domain/refresh_token?refresh_token=$refreshToken');
       authBox.put('access_token', response.data);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Dashboard(),
-        ),
-      );
+      navigatorKey.currentState?.pushNamed("/dashbaord");
       isAuthenticated = true;
     } catch (err) {
-      logout(context);
+      logout();
     }
   }
 
-  void logout(BuildContext context) {
+  void logout() {
     Box authBox = Hive.box('auth');
     authBox.clear();
     isAuthenticated = false;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LoginView(),
-      ),
-    );
+    navigatorKey.currentState?.pushNamed('/login');
     notifyListeners();
   }
 }

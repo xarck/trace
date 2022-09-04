@@ -4,9 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:trace/controllers/auth_controller.dart';
 import 'package:trace/controllers/basic_controller.dart';
 import 'package:trace/controllers/media_controller.dart';
-import 'package:trace/views/login_view.dart';
+import 'package:trace/routes/route_generator.dart';
 import 'package:trace/views/dashboard.dart';
+import 'package:trace/views/login_view.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('auth');
@@ -38,7 +40,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   authentication() async {
     AuthController ac = Provider.of(context, listen: false);
-    await ac.checkLogin(context);
+    await ac.checkLogin();
   }
 
   @override
@@ -92,6 +94,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       debugShowCheckedModeBanner: false,
+      onGenerateRoute: RouteGenerator.generateRoute,
       home: Consumer<AuthController>(
         builder: (context, data, child) {
           return data.isAuthenticated ? Dashboard() : LoginView();

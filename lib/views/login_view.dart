@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trace/constants/api_constant.dart';
 import 'package:trace/controllers/auth_controller.dart';
-import 'package:trace/views/dashboard.dart';
+import 'package:trace/main.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginView extends StatefulWidget {
@@ -29,12 +29,7 @@ class _LoginViewState extends State<LoginView> {
     String html = await _controller.evaluateJavascript(
         "window.document.getElementsByTagName('pre')[0].innerHTML;");
     ac.authorize(html);
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Dashboard(),
-      ),
-    );
+    navigatorKey.currentState?.pushNamed('/dashboard');
   }
 
   @override
