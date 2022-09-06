@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trace/utils/dimension.dart';
+import 'package:trace/utils/util.dart';
 import 'package:trace/views/home_view.dart';
 import 'package:trace/views/library_view.dart';
 import 'package:trace/views/profile_view.dart';
@@ -35,28 +36,31 @@ class _DashboardState extends State<Dashboard> {
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            label: 'Home',
-            icon: Icon(Icons.home),
-          ),
-          BottomNavigationBarItem(
-            label: 'Library',
-            icon: Icon(Icons.trending_up_sharp),
-          ),
-          BottomNavigationBarItem(
-            label: 'Profile',
-            icon: Icon(Icons.person),
-          ),
-        ],
-        backgroundColor: Colors.black,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        iconSize: 26.0,
-        selectedFontSize: 16.0,
-        selectedItemColor: Colors.green,
-        unselectedFontSize: 16.0,
+      bottomNavigationBar: SizedBox(
+        height: 50,
+        child: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              label: 'Home',
+              icon: Icon(Icons.home),
+            ),
+            BottomNavigationBarItem(
+              label: 'Top',
+              icon: Icon(Icons.trending_up_sharp),
+            ),
+            BottomNavigationBarItem(
+              label: 'Profile',
+              icon: Icon(Icons.person),
+            ),
+          ],
+          backgroundColor: hexToColor("2C3639"),
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          iconSize: 20.0,
+          selectedFontSize: 14.0,
+          selectedItemColor: Colors.green,
+          unselectedFontSize: 14.0,
+        ),
       ),
     );
   }

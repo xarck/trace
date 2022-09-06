@@ -43,6 +43,7 @@ class AuthController extends ChangeNotifier {
       authBox.put('access_token', response.data);
       navigatorKey.currentState?.pushNamed("/dashbaord");
       isAuthenticated = true;
+      notifyListeners();
     } catch (err) {
       logout();
     }

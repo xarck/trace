@@ -6,6 +6,7 @@ import 'package:trace/controllers/media_controller.dart';
 import 'package:trace/enums/time_period.dart';
 import 'package:trace/enums/top_target.dart';
 import 'package:trace/models/artist_model.dart';
+import 'package:trace/utils/util.dart';
 
 class TopArtistsView extends StatefulWidget {
   final TopArtists topArtists;
@@ -43,13 +44,13 @@ class _TopArtistsViewState extends State<TopArtistsView> {
                           index++;
                           return Container(
                             margin: EdgeInsets.symmetric(
-                              vertical: 3,
+                              vertical: 2,
                               horizontal: 5,
                             ),
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.black,
+                              color: hexToColor("3F4E4F"),
                             ),
                             child: Row(
                               children: [
@@ -82,7 +83,7 @@ class _TopArtistsViewState extends State<TopArtistsView> {
                     margin: EdgeInsets.only(bottom: 35),
                     child: GridView.count(
                       shrinkWrap: true,
-                      crossAxisCount: 3,
+                      crossAxisCount: 4,
                       childAspectRatio: 0.75,
                       crossAxisSpacing: 10,
                       physics: ClampingScrollPhysics(),
@@ -93,11 +94,12 @@ class _TopArtistsViewState extends State<TopArtistsView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(10),
                               child: CachedNetworkImage(
                                 imageUrl: "${artist.images?[0].url}",
-                                height: 120,
-                                width: 120,
+                                height: 80,
+                                width: 80,
+                                fit: BoxFit.cover,
                                 placeholder: (context, url) => Container(
                                   padding: EdgeInsets.all(30),
                                   child: CircularProgressIndicator(),
@@ -135,21 +137,11 @@ class _TopArtistsViewState extends State<TopArtistsView> {
           alignment: Alignment.bottomCenter,
           child: Container(
             height: 35,
-            color: Colors.black,
+            color: hexToColor("3F4E4F"),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                      (states) {
-                        if (convertTermToTimePeriod('short_term') == mc?.tp) {
-                          return Colors.black87;
-                        }
-                        return Colors.black;
-                      },
-                    ),
-                  ),
                   onPressed: () async {
                     await mc?.fetchArtists(range: 'short_term');
                   },

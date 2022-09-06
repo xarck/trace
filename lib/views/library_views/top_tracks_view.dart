@@ -6,6 +6,7 @@ import 'package:trace/controllers/media_controller.dart';
 import 'package:trace/enums/time_period.dart';
 import 'package:trace/enums/top_target.dart';
 import 'package:trace/models/track_model.dart';
+import 'package:trace/utils/util.dart';
 
 class TopTracksView extends StatefulWidget {
   final TopTracks topTracks;
@@ -43,11 +44,13 @@ class _TopTracksViewState extends State<TopTracksView> {
                           index++;
                           return Container(
                             margin: EdgeInsets.symmetric(
-                                vertical: 3, horizontal: 5),
+                              vertical: 2,
+                              horizontal: 5,
+                            ),
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.black,
+                              color: hexToColor("3F4E4F"),
                             ),
                             child: Row(
                               children: [
@@ -56,8 +59,8 @@ class _TopTracksViewState extends State<TopTracksView> {
                                   child: CachedNetworkImage(
                                     imageUrl:
                                         "${currItem?.album?.images?[0].url}",
-                                    height: 60,
-                                    width: 60,
+                                    height: 50,
+                                    width: 50,
                                     placeholder: (context, url) => Container(
                                       padding: EdgeInsets.all(10),
                                       child: CircularProgressIndicator(),
@@ -85,7 +88,7 @@ class _TopTracksViewState extends State<TopTracksView> {
                     margin: EdgeInsets.only(bottom: 35),
                     child: GridView.count(
                       shrinkWrap: true,
-                      crossAxisCount: 3,
+                      crossAxisCount: 4,
                       childAspectRatio: 0.75,
                       crossAxisSpacing: 10,
                       physics: ClampingScrollPhysics(),
@@ -96,11 +99,12 @@ class _TopTracksViewState extends State<TopTracksView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(10),
                               child: CachedNetworkImage(
                                 imageUrl: "${track.album?.images?[0].url}",
-                                height: 120,
-                                width: 120,
+                                height: 80,
+                                width: 80,
+                                fit: BoxFit.cover,
                                 placeholder: (context, url) => Container(
                                   padding: EdgeInsets.all(30),
                                   child: CircularProgressIndicator(),
@@ -138,7 +142,7 @@ class _TopTracksViewState extends State<TopTracksView> {
           alignment: Alignment.bottomCenter,
           child: Container(
             height: 35,
-            color: Colors.black,
+            color: hexToColor("3F4E4F"),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

@@ -6,6 +6,7 @@ import 'package:trace/controllers/media_controller.dart';
 import 'package:trace/models/currently_playing_model.dart';
 import 'package:trace/models/recently_played_model.dart';
 import 'package:trace/utils/dimension.dart';
+import 'package:trace/utils/util.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -32,6 +33,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Consumer<MediaController>(
@@ -194,7 +196,7 @@ class _RecentlyPlayedViewState extends State<RecentlyPlayedView> {
                       padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.black,
+                        color: hexToColor("3F4E4F"),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -205,8 +207,8 @@ class _RecentlyPlayedViewState extends State<RecentlyPlayedView> {
                             child: CachedNetworkImage(
                               imageUrl:
                                   "${widget.recentlyPlayed?.items?[index].track?.album?.images?[0].url}",
-                              height: 60,
-                              width: 60,
+                              height: 50,
+                              width: 50,
                               placeholder: (context, url) => Container(
                                 padding: EdgeInsets.all(10),
                                 child: CircularProgressIndicator(),
@@ -218,7 +220,7 @@ class _RecentlyPlayedViewState extends State<RecentlyPlayedView> {
                           SizedBox(width: 10),
                           Container(
                             width: getSize(context).width / 1.5,
-                            height: 60,
+                            height: 50,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -227,8 +229,10 @@ class _RecentlyPlayedViewState extends State<RecentlyPlayedView> {
                                   "${widget.recentlyPlayed?.items?[index].track?.name}",
                                   style:
                                       Theme.of(context).textTheme.displayLarge,
+                                  softWrap: false,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.fade,
                                 ),
-                                // Spacer(),
                                 Text(
                                   "${widget.recentlyPlayed?.items?[index].track?.artists?[0].name}",
                                   style:

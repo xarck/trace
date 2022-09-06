@@ -5,6 +5,7 @@ import 'package:trace/controllers/auth_controller.dart';
 import 'package:trace/controllers/basic_controller.dart';
 import 'package:trace/controllers/media_controller.dart';
 import 'package:trace/routes/route_generator.dart';
+import 'package:trace/utils/util.dart';
 import 'package:trace/views/dashboard.dart';
 import 'package:trace/views/login_view.dart';
 
@@ -56,40 +57,42 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         fontFamily: "Proxima",
         brightness: Brightness.dark,
-        bottomAppBarColor: Colors.black,
+        bottomAppBarColor: hexToColor("2C3639"),
         primarySwatch: Colors.green,
         focusColor: Colors.green,
         splashColor: Colors.green,
         tabBarTheme: TabBarTheme(
-          // indicatorSize: ,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white,
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.black,
+          backgroundColor: hexToColor("2C3639"),
         ),
-        scaffoldBackgroundColor: Colors.black,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: hexToColor("2C3639"),
+        ),
+        scaffoldBackgroundColor: hexToColor("2C3639"),
         textTheme: TextTheme(
           titleMedium: TextStyle(
             fontSize: 22,
-            color: Colors.white70,
+            color: hexToColor("DCD7C9"),
           ),
           displayMedium: TextStyle(
             fontSize: 18,
-            color: Colors.white,
+            color: hexToColor("DCD7C9"),
           ),
           displayLarge: TextStyle(
-            fontSize: 18,
-            color: Colors.white54,
+            fontSize: 16,
+            color: hexToColor("DCD7C9"),
           ),
           labelMedium: TextStyle(
-            fontSize: 16,
-            color: Colors.white24,
+            fontSize: 14,
+            color: hexToColor("DCD7C9"),
           ),
           labelLarge: TextStyle(
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.w400,
-            color: Colors.white54,
+            color: hexToColor("DCD7C9"),
           ),
         ),
       ),
