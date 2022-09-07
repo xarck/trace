@@ -22,6 +22,7 @@ class MediaController extends ChangeNotifier {
   fetchTracks(
       {int limit = 50, int offset = 0, String range = 'long_term'}) async {
     try {
+      isLoading = true;
       String token = Hive.box('auth').get('access_token');
       Response response = await Dio().get(
         'https://api.spotify.com/v1/me/top/tracks?limit=$limit&offset=$offset&time_range=$range',
@@ -43,6 +44,7 @@ class MediaController extends ChangeNotifier {
   fetchArtists(
       {int limit = 50, int offset = 0, String range = 'long_term'}) async {
     try {
+      isLoading = true;
       String token = Hive.box('auth').get('access_token');
       Response response = await Dio().get(
         'https://api.spotify.com/v1/me/top/artists?limit=$limit&offset=$offset&time_range=$range',
@@ -63,6 +65,7 @@ class MediaController extends ChangeNotifier {
 
   fetchRecentlyPlayed({int limit = 50}) async {
     try {
+      isLoading = true;
       String token = Hive.box('auth').get('access_token');
       Response response = await Dio().get(
         'https://api.spotify.com/v1/me/player/recently-played?limit=$limit',
@@ -81,6 +84,7 @@ class MediaController extends ChangeNotifier {
 
   fetchCurrentlyPlaying() async {
     try {
+      isLoading = true;
       String token = Hive.box('auth').get('access_token');
       Response response = await Dio().get(
         'https://api.spotify.com/v1/me/player/currently-playing',
