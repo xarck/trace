@@ -7,6 +7,7 @@ import 'package:trace/models/currently_playing_model.dart';
 import 'package:trace/models/recently_played_model.dart';
 import 'package:trace/utils/dimension.dart';
 import 'package:trace/utils/util.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -108,19 +109,34 @@ class _CurrentlyPlayingViewState extends State<CurrentlyPlayingView> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                "${widget.currentSong?.item?.album?.images?[0].url}",
-                            height: 130,
-                            width: 130,
-                            placeholder: (context, url) => Container(
-                              padding: EdgeInsets.all(30),
-                              child: CircularProgressIndicator(),
+                        GestureDetector(
+                          onTap: () async {
+                            Uri url = Uri.parse(widget
+                                    .currentSong?.item?.externalUrls?.spotify ??
+                                "");
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(
+                                url,
+                                mode: LaunchMode.externalNonBrowserApplication,
+                              );
+                            } else {
+                              throw "Could not launch $url";
+                            }
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  "${widget.currentSong?.item?.album?.images?[0].url}",
+                              height: 130,
+                              width: 130,
+                              placeholder: (context, url) => Container(
+                                padding: EdgeInsets.all(30),
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
                             ),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
                           ),
                         ),
                         Container(
@@ -202,19 +218,39 @@ class _RecentlyPlayedViewState extends State<RecentlyPlayedView> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  "${widget.recentlyPlayed?.items?[index].track?.album?.images?[0].url}",
-                              height: 50,
-                              width: 50,
-                              placeholder: (context, url) => Container(
-                                padding: EdgeInsets.all(10),
-                                child: CircularProgressIndicator(),
+                          GestureDetector(
+                            onTap: () async {
+                              Uri url = Uri.parse(widget
+                                      .recentlyPlayed
+                                      ?.items?[index]
+                                      .track
+                                      ?.externalUrls
+                                      ?.spotify ??
+                                  "");
+                              if (await canLaunchUrl(url)) {
+                                await launchUrl(
+                                  url,
+                                  mode:
+                                      LaunchMode.externalNonBrowserApplication,
+                                );
+                              } else {
+                                throw "Could not launch $url";
+                              }
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    "${widget.recentlyPlayed?.items?[index].track?.album?.images?[0].url}",
+                                height: 50,
+                                width: 50,
+                                placeholder: (context, url) => Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: CircularProgressIndicator(),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
                               ),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
                             ),
                           ),
                           SizedBox(width: 10),

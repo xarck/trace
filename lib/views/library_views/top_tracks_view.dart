@@ -7,6 +7,7 @@ import 'package:trace/enums/time_period.dart';
 import 'package:trace/enums/top_target.dart';
 import 'package:trace/models/track_model.dart';
 import 'package:trace/utils/util.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TopTracksView extends StatefulWidget {
   final TopTracks topTracks;
@@ -29,11 +30,11 @@ class _TopTracksViewState extends State<TopTracksView> {
 
   @override
   Widget build(BuildContext context) {
-    int index = 0;
     return Stack(
       children: [
         Consumer<BasicController>(
           builder: (context, data, child) {
+            int itemRank = 0;
             return data.topTarget == TopTarget.LIST
                 ? Container(
                     padding: EdgeInsets.only(bottom: 35),
@@ -41,7 +42,6 @@ class _TopTracksViewState extends State<TopTracksView> {
                         itemCount: widget.topTracks.items?.length,
                         itemBuilder: (context, index) {
                           Items? currItem = widget.topTracks.items?[index];
-                          index++;
                           return Container(
                             margin: EdgeInsets.symmetric(
                               vertical: 2,
@@ -54,19 +54,38 @@ class _TopTracksViewState extends State<TopTracksView> {
                             ),
                             child: Row(
                               children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        "${currItem?.album?.images?[0].url}",
-                                    height: 50,
-                                    width: 50,
-                                    placeholder: (context, url) => Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: CircularProgressIndicator(),
+                                GestureDetector(
+                                  onTap: () async {
+                                    Uri url = Uri.parse(widget
+                                            .topTracks
+                                            .items?[index]
+                                            .externalUrls
+                                            ?.spotify ??
+                                        "");
+                                    if (await canLaunchUrl(url)) {
+                                      await launchUrl(
+                                        url,
+                                        mode: LaunchMode
+                                            .externalNonBrowserApplication,
+                                      );
+                                    } else {
+                                      throw "Could not launch $url";
+                                    }
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl:
+                                          "${currItem?.album?.images?[0].url}",
+                                      height: 50,
+                                      width: 50,
+                                      placeholder: (context, url) => Container(
+                                        padding: EdgeInsets.all(10),
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
                                     ),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
                                   ),
                                 ),
                                 SizedBox(width: 10),
@@ -93,7 +112,7 @@ class _TopTracksViewState extends State<TopTracksView> {
                       crossAxisSpacing: 10,
                       physics: ClampingScrollPhysics(),
                       children: widget.topTracks.items!.map<Widget>((track) {
-                        index++;
+                        itemRank++;
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -116,7 +135,7 @@ class _TopTracksViewState extends State<TopTracksView> {
                             Row(
                               children: [
                                 Text(
-                                  "$index. ",
+                                  "$itemRank. ",
                                   style:
                                       Theme.of(context).textTheme.labelMedium,
                                 ),

@@ -6,6 +6,7 @@ import 'package:trace/models/artist_model.dart';
 import 'package:trace/models/currently_playing_model.dart';
 import 'package:trace/models/recently_played_model.dart';
 import 'package:trace/models/track_model.dart';
+import 'package:trace/models/user_playlists.dart';
 
 import '../models/profile_model.dart';
 
@@ -15,6 +16,7 @@ class MediaController extends ChangeNotifier {
   RecentlyPlayed? recentlyPlayed;
   CurrentlyPlayingModel? currentlyPlaying;
   Profile? profile;
+  UserPlaylist? playlists;
   bool isLoading = true;
   bool freshSongPlaying = false;
   TimePeriod tp = TimePeriod.ALLTIME;
@@ -119,6 +121,24 @@ class MediaController extends ChangeNotifier {
         ),
       );
       profile = Profile.fromJson(response.data);
+      notifyListeners();
+    } catch (err) {
+      print(err.toString());
+    }
+  }
+
+  fetchUsersPlaylist() async {
+    try {
+      String token = Hive.box('auth').get('access_token');
+      Response response = await Dio().get(
+        'https://api.spotify.com/v1/users/${profile?.id}/playlists',
+        options: Options(
+          headers: {
+            'Authorization': "Bearer $token",
+          },
+        ),
+      );
+      playlists = UserPlaylist.fromJson(response.data);
       notifyListeners();
     } catch (err) {
       print(err.toString());
