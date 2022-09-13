@@ -7,6 +7,7 @@ import 'package:trace/enums/time_period.dart';
 import 'package:trace/enums/top_target.dart';
 import 'package:trace/models/artist_model.dart';
 import 'package:trace/utils/util.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TopArtistsView extends StatefulWidget {
   final TopArtists topArtists;
@@ -41,7 +42,6 @@ class _TopArtistsViewState extends State<TopArtistsView> {
                         itemCount: widget.topArtists.items?.length,
                         itemBuilder: (context, index) {
                           Items? currItem = widget.topArtists.items?[index];
-                          index++;
                           return Container(
                             margin: EdgeInsets.symmetric(
                               vertical: 2,
@@ -54,18 +54,37 @@ class _TopArtistsViewState extends State<TopArtistsView> {
                             ),
                             child: Row(
                               children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: "${currItem?.images?[0].url}",
-                                    height: 60,
-                                    width: 60,
-                                    placeholder: (context, url) => Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: CircularProgressIndicator(),
+                                GestureDetector(
+                                  onTap: () async {
+                                    Uri url = Uri.parse(widget
+                                            .topArtists
+                                            .items?[index]
+                                            .externalUrls
+                                            ?.spotify ??
+                                        "");
+                                    if (await canLaunchUrl(url)) {
+                                      await launchUrl(
+                                        url,
+                                        mode: LaunchMode
+                                            .externalNonBrowserApplication,
+                                      );
+                                    } else {
+                                      throw "Could not launch $url";
+                                    }
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: "${currItem?.images?[0].url}",
+                                      height: 60,
+                                      width: 60,
+                                      placeholder: (context, url) => Container(
+                                        padding: EdgeInsets.all(10),
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
                                     ),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
                                   ),
                                 ),
                                 SizedBox(width: 10),
